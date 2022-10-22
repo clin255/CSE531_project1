@@ -1,0 +1,55 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package app;
+
+// The Bank service definition.
+service Bank {
+  // Service between Branch and Customer, Branch and Branch
+  rpc  MsgDelivery(MsgDelivery_request) returns (MsgDelivery_response) {}
+
+}
+
+enum Operation {
+  query    = 0;  //query balance
+  withdraw = 1;  //withdraw money
+  deposit  = 2;  //deposit money
+}
+
+enum Result {
+  success = 0;  //operation succeeded
+  failure = 1;  //operation failed
+  error   = 2;  //operation error
+}
+
+enum Source {
+  customer = 0;  //from customer
+  branch   = 1;  //from branch
+}
+message MsgDelivery_request {
+  Operation     operation_type  = 1;  //operation type
+  int32         id              = 2;  //Source Branch/Customer id
+  int32         amount          = 3;  //Amount of money
+  Source        source_type     = 4;  //Source type
+
+}
+
+message MsgDelivery_response {
+  Result   operation_result = 1;  //operation result
+  int32    id               = 2;  //Source Branch id
+  int32    amount           = 3;  //Amount of money
+  Source   source_type      = 4;  //Source type
+}
