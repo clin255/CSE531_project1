@@ -54,8 +54,11 @@ def main():
         customer_id = customer["id"]
         logger.info("Customer {} starting to execute events".format(customer_id))
         execute_customer_request(customer_id, branches_bind_addresses[customer_id], customer["events"], output_file)
+
+    #Add delay before terminate the branch processes
+    time.sleep(3)
     for worker in workers:
-        worker.join()
+        worker.terminate()
 
 if __name__ == "__main__":
     main()
